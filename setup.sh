@@ -21,12 +21,6 @@ bundle exec rails db:migrate
 # TODO: add templates show & index
 sed -i'' -z "s/def show *\n *end/def show\n    @todo_item = TodoItem.new\n  end/" app/controllers/todo_lists_controller.rb
 
-# # generate channel and move it to app/javascript/js/channels/
-# rails g channel Room --force
-# mkdir -p app/javascript/channels app/javascript/js/channels
-# [ "$(ls -A app/javascript/channels/ 2> /dev/null)" ] && mv -f app/javascript/channels/* app/javascript/js/channels/ || echo "no channels to move"
-# rmdir app/javascript/channels
-
 bundle add stimulus_reflex --version 3.3.0
 bundle exec rails stimulus_reflex:install
 bundle exec rails g stimulus_reflex TodoItem
@@ -140,47 +134,3 @@ DONE
 # DONE
 
 rails server -p 4000
-
-
-
-
-# cat > app/channels/example_channel.rb <<"DONE"
-# class ExampleChannel < ApplicationCable::Channel
-#   def subscribed
-#     stream_from "example-stream"
-#   end
-# end
-
-# DONE
-
-# cat > app/javascript/channels/example_channel.js <<"DONE"
-# import CableReady from 'cable_ready'
-# import consumer from './consumer'
-
-# consumer.subscriptions.create('ExampleChannel', {
-#   received (data) {
-#     if (data.cableReady) CableReady.perform(data.operations)
-#   }
-# })
-
-# DONE
-
-# mkdir -p app/views/home
-# cat > app/views/home/index.html.erb <<"DONE"
-# <h1>What will happen?</h1>
-
-# <div id="content">Waiting...</div>
-
-# DONE
-
-# cat > app/controllers/home_controller.rb <<"DONE"
-# class HomeController < ApplicationController
-#   def index
-#     ExampleJob.set(wait: 5.seconds).perform_later
-#   end
-# end
-
-# DONE
-
-
-
